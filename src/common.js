@@ -4,7 +4,7 @@
  * implementations of `debug()`.
  */
 
-module.exports = function setup(env) {
+module.exports = function setup (env) {
   createDebug.debug = createDebug['default'] = createDebug;
   createDebug.coerce = coerce;
   createDebug.disable = disable;
@@ -12,7 +12,7 @@ module.exports = function setup(env) {
   createDebug.enabled = enabled;
   createDebug.humanize = require('ms');
 
-  Object.keys(env).forEach(function(key) {
+  Object.keys(env).forEach(function (key) {
     createDebug[key] = env[key];
   });
 
@@ -38,12 +38,12 @@ module.exports = function setup(env) {
 
   /**
    * Select a color.
-   * @param {String} namespace
-   * @return {Number}
-   * @api private
+   * @param	{String} namespace
+   * @return	{Number}
+   * @api	private
    */
 
-  function selectColor(namespace) {
+  function selectColor (namespace) {
     var hash = 0, i;
 
     for (i in namespace) {
@@ -58,16 +58,16 @@ module.exports = function setup(env) {
   /**
    * Create a debugger with the given `namespace`.
    *
-   * @param {String} namespace
-   * @param {Integer} colorIndex
-   * @return {Function}
-   * @api public
+   * @param	{String} namespace
+   * @param	{Integer} colorIndex
+   * @return	{Function}
+   * @api	public
    */
 
-  function createDebug(namespace, colorIndex) {
+  function createDebug (namespace, colorIndex) {
     var prevTime;
 
-    function debug() {
+    function debug () {
       // disabled?
       if (!debug.enabled) return;
 
@@ -96,7 +96,7 @@ module.exports = function setup(env) {
 
       // apply any `formatters` transformations
       var index = 0;
-      args[0] = args[0].replace(/%([a-zA-Z%])/g, function(match, format) {
+      args[0] = args[0].replace(/%([a-zA-Z%])/g, function (match, format) {
         // if we encounter an escaped % then don't increase the array index
         if (match === '%%') return match;
         index++;
@@ -122,7 +122,7 @@ module.exports = function setup(env) {
     debug.namespace = namespace;
     debug.enabled = createDebug.enabled(namespace);
     debug.useColors = createDebug.useColors();
-    debug.color = (colorIndex && exports.colors.indexOf(colorIndex) > -1) ? exports.colors[colorIndex] : selectColor(namespace);
+    debug.color = (colorIndex && createDebug.colors.length > colorIndex) ? createDebug.colors[colorIndex] : selectColor(namespace);
     debug.destroy = destroy;
     //debug.formatArgs = formatArgs;
     //debug.rawLog = rawLog;
@@ -151,11 +151,11 @@ module.exports = function setup(env) {
    * Enables a debug mode by namespaces. This can include modes
    * separated by a colon and wildcards.
    *
-   * @param {String} namespaces
-   * @api public
+   * @param	{String} namespaces
+   * @api	public
    */
 
-  function enable(namespaces) {
+  function enable (namespaces) {
     createDebug.save(namespaces);
 
     createDebug.names = [];
@@ -184,22 +184,22 @@ module.exports = function setup(env) {
   /**
    * Disable debug output.
    *
-   * @api public
+   * @api	public
    */
 
-  function disable() {
+  function disable () {
     createDebug.enable('');
   }
 
   /**
    * Returns true if the given mode name is enabled, false otherwise.
    *
-   * @param {String} name
-   * @return {Boolean}
-   * @api public
+   * @param	{String} name
+   * @return	{Boolean}
+   * @api	public
    */
 
-  function enabled(name) {
+  function enabled (name) {
     if (name[name.length - 1] === '*') {
       return true;
     }
@@ -220,12 +220,12 @@ module.exports = function setup(env) {
   /**
    * Coerce `val`.
    *
-   * @param {Mixed} val
-   * @return {Mixed}
-   * @api private
+   * @param	{Mixed} val
+   * @return	{Mixed}
+   * @api	private
    */
 
-  function coerce(val) {
+  function coerce (val) {
     if (val instanceof Error) return val.stack || val.message;
     return val;
   }
@@ -234,3 +234,4 @@ module.exports = function setup(env) {
 
   return createDebug;
 }
+
